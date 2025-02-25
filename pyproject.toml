@@ -1,0 +1,24 @@
+[project]
+name = "attendance"
+authors = [
+    { name = "mohesu", email = "contactus@mohesu.com"}
+]
+description = "attendance"
+requires-python = ">=3.10"
+readme = "README.md"
+dynamic = ["version"]
+dependencies = [
+    "frappe~=15.0.0",
+    "pymssql~=2.3.2",
+]
+
+[build-system]
+requires = ["flit_core >=3.4,<4", "pymssql >=2.3.2"]
+build-backend = "flit_core.buildapi"
+
+# These dependencies are only installed when developer mode is enabled
+[tool.bench.dev-dependencies]
+# package_name = "~=1.1.0"
+
+
+
