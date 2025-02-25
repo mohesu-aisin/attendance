@@ -18,7 +18,7 @@ scheduler_events = {
     "cron": {
         # Every 10 minutes
         "*/10 * * * *": [
-            "custom_integration.sync_mssql_attendance.sync_mssql_attendance.sync_mssql_attendance"
+            "attendance.sync.mssql.attendance"
         ]
     }
 }
