@@ -143,10 +143,10 @@ def attendance():
                 "name"  # docname
             )
             if not employee_id:
-                frappe.log_error(
-                    message=f"No Employee found for device ID: {user_id}",
-                    title="MSSQL Attendance Sync"
-                )
+                # frappe.log_error(
+                #     message=f"No Employee found for device ID: {user_id}",
+                #     title="MSSQL Attendance Sync"
+                # )
                 continue  # Skip if no matching employee
 
             # Attempt to create the new checkin record
