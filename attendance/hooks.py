@@ -18,7 +18,7 @@ scheduler_events = {
     "cron": {
         # Every 10 minutes
         "*/10 * * * *": [
-            "attendance.sync.mssql.attendance"
+            "attendance.attendance.sync.mssql.attendance"
         ]
     }
 }
