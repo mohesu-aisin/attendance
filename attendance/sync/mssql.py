@@ -8,37 +8,37 @@ MIN_MSSQL_DATETIME = datetime(1753, 1, 1)
 
 
 def get_mssql_config():
-    """Retrieve and validate MSSQL configuration from environment variables."""
-    required_vars = [
-        "ATTENDANCE_DB_HOST",
-        "ATTENDANCE_DB_PORT",
-        "ATTENDANCE_DB_USER",
-        "ATTENDANCE_DB_PASSWORD",
-        "ATTENDANCE_DB_NAME"
-    ]
-    config = {}
-    missing = []
-    for var in required_vars:
-        value = os.environ.get(var)
-        if not value:
-            missing.append(var)
-        else:
-            config[var] = value
-    if missing:
+    """Retrieve MSSQL configuration from the 'MSSQL Attendance Settings' single doctype."""
+    config = frappe.get_doc("MSSQL Attendance Settings")
+
+    db_host = config.db_host
+    db_port = config.db_port
+    db_user = config.db_user
+    db_password = config.db_password
+    db_name = config.db_name
+
+    if not all([db_host, db_port, db_user, db_password, db_name]):
         frappe.log_error(
             message=f"Missing MSSQL configuration environment variables: {', '.join(missing)}",
             title="MSSQL Configuration Error"
         )
         return None
     try:
-        config["ATTENDANCE_DB_PORT"] = int(config["ATTENDANCE_DB_PORT"])
+        db_port = int(db_port)  # Ensure port is an integer
     except ValueError:
         frappe.log_error(
-            message="Invalid port number in ATTENDANCE_DB_PORT. It must be an integer.",
-            title="MSSQL Configuration Error"
+            message="Invalid port number in 'MSSQL Attendance Settings'. It must be an integer.",
+            title="MSSQL Configuration Error",
         )
         return None
-    return config
+
+    return {
+        "ATTENDANCE_DB_HOST": db_host,
+        "ATTENDANCE_DB_PORT": db_port,
+        "ATTENDANCE_DB_USER": db_user,
+        "ATTENDANCE_DB_PASSWORD": db_password,
+        "ATTENDANCE_DB_NAME": db_name,
+    }
 
 
 def attendance():
