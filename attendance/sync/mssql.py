@@ -209,8 +209,8 @@ def fetch_all_logs(conn, table_name, last_sync_dt):
             CreatedDate, LastModifiedDate, LocationAddress, BodyTemperature,
             IsMaskOn
         FROM {table_name}
-        WHERE LogDate > %s
-        ORDER BY LogDate ASC
+        WHERE DownloadDate > %s
+        ORDER BY DownloadDate ASC
     """
     try:
         cursor.execute(query, (last_sync_dt,))
@@ -319,6 +319,14 @@ def validate_or_default_sync_time(frappe, dt_val, default_days=2):
     else:
         frappe.logger("mssql_attendance").info("No last_sync_time found. Using default.")
         result = datetime.now() - timedelta(days=default_days)
+
+    # Check if dt_val is more than default_days from now
+    now = datetime.now()
+    if result > now - timedelta(days=default_days):
+        frappe.logger("mssql_attendance").warning(
+            f"last_sync_time is more than {default_days} days in the future.  Using default (now - {default_days} days)."
+        )
+        result = now - timedelta(days=default_days)
 
     if result < MIN_MSSQL_DATETIME:
         frappe.logger("mssql_attendance").warning(f"Calculated sync time {result} is earlier than the minimum MSSQL datetime. Using minimum datetime.")
