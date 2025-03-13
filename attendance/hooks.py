@@ -16,8 +16,8 @@ app_license = "mit"
 
 scheduler_events = {
     "cron": {
-        # Every 10 minutes
-        "*/10 * * * *": [
+        # Every 20 minutes
+        "*/20 * * * *": [
             "attendance.sync.mssql.attendance"
         ]
     }
